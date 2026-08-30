@@ -16,6 +16,8 @@ function needsFix(): boolean {
 }
 
 if (typeof window !== 'undefined' && needsFix()) {
+  // Intentionally never closed: dom.window.close() would tear down the Storage objects we just
+  // installed onto globalThis, so this JSDOM instance is kept alive for the life of the process.
   const dom = new JSDOM('', { url: 'http://localhost/' });
   for (const key of ['localStorage', 'sessionStorage'] as const) {
     Object.defineProperty(globalThis, key, { value: dom.window[key], configurable: true, writable: true });
