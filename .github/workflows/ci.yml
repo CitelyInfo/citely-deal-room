@@ -4,9 +4,9 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with: { fetch-depth: 0 }
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with: { node-version: 22, cache: npm }
       - run: npm ci
       - run: npm run typecheck
@@ -14,8 +14,9 @@ jobs:
       - run: npm run build
       - name: no innerHTML / inline styles / external URLs in src
         run: |
-          ! grep -rn "innerHTML\|insertAdjacentHTML\|outerHTML" src/
-          ! grep -rn "style=\"" src/ index.html
-          ! grep -rn "https\?://" src/ index.html
-      - uses: gitleaks/gitleaks-action@v2
+          if grep -rn "innerHTML\|insertAdjacentHTML\|outerHTML" src/; then echo "forbidden DOM API"; exit 1; fi
+          if grep -rn "style=[\"']" src/ index.html; then echo "inline style attribute"; exit 1; fi
+          if grep -rn "setAttribute(['\"]style" src/; then echo "style via setAttribute"; exit 1; fi
+          if grep -rn "https\?://" src/ index.html; then echo "external URL"; exit 1; fi
+      - uses: gitleaks/gitleaks-action@ff98106e4c7b2bc287b24eaf42907196329070c7 # v2.3.9
         env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
