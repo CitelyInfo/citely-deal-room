@@ -51,4 +51,12 @@ describe('Store', () => {
     expect(saved).toHaveLength(1);
     expect(store.blockers().find(b => b.id === 'b1')!.open).toBe(false);
   });
+
+  it('notifies subscribers with blockersChanged as the second argument, before the caller can react', () => {
+    const store = new Store(S, fresh());
+    let received: string[] | null = null;
+    store.subscribe((_s, changed) => { received = changed; });
+    store.update(s => setMaterialState(s, 'm1', 'provided', { confirmation: sig }));
+    expect(received).toEqual(['b1']);
+  });
 });

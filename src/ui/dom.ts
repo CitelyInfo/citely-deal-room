@@ -10,3 +10,8 @@ export function el(tag: string, attrs: Record<string, string> = {}, ...children:
 export function clear(node: HTMLElement): void { while (node.firstChild) node.removeChild(node.firstChild); }
 export function clip(s: string, max: number): string { return s.length > max ? s.slice(0, max - 1) + '…' : s; }
 export function fmtTime(iso: string): string { return iso.replace('T', ' ').replace(/\.\d+Z$/, 'Z'); }
+export function btnEl(label: string, cls: string, on: () => void): HTMLElement {
+  const b = el('button', { type: 'button', class: `btn ${cls}` }, label);
+  b.addEventListener('click', on);
+  return b;
+}

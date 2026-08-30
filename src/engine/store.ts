@@ -2,7 +2,7 @@ import { computeBlockers, blockerDiff } from './rules';
 import type { Blocker, RoomSchema, RoomState } from './types';
 
 export class Store {
-  private listeners = new Set<(s: RoomState) => void>();
+  private listeners = new Set<(s: RoomState, blockersChanged: string[]) => void>();
   constructor(
     public readonly schema: RoomSchema,
     private _state: RoomState,
@@ -15,10 +15,10 @@ export class Store {
     this._state = fn(this._state);
     const blockersChanged = blockerDiff(before, this.blockers());
     this.persist?.(this._state);
-    for (const l of this.listeners) l(this._state);
+    for (const l of this.listeners) l(this._state, blockersChanged);
     return { blockersChanged };
   }
-  subscribe(fn: (s: RoomState) => void): () => void {
+  subscribe(fn: (s: RoomState, blockersChanged: string[]) => void): () => void {
     this.listeners.add(fn);
     return () => this.listeners.delete(fn);
   }

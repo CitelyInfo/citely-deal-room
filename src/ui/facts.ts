@@ -1,20 +1,19 @@
 import type { Fact, RoomState } from '../engine/types';
 import type { Dispatch } from './app';
-import { el, fmtTime } from './dom';
-
-const btn = (label: string, cls: string, on: () => void) => { const b = el('button', { type: 'button', class: `btn ${cls}` }, label); b.addEventListener('click', on); return b; };
+import { MAX_SUMMARY } from '../engine/constants';
+import { btnEl, clip, el, fmtTime } from './dom';
 
 function row(f: Fact, d: Dispatch): HTMLElement {
   return el('tr', { class: `status-${f.status}` },
     el('td', { class: 'mono mute' }, f.id),
     el('td', {}, el('div', {}, f.statement), el('div', { class: 'mute small' }, `Owner: ${f.owner ?? '—'} · Basis: ${f.basis ?? '—'}`),
-      f.agentEvidence ? el('div', { class: 'small evid' }, el('span', { class: 'tag tag-agent' }, 'agent evidence'), ' ', f.agentEvidence.summary) : null),
+      f.agentEvidence ? el('div', { class: 'small evid' }, el('span', { class: 'tag tag-agent' }, 'agent evidence'), ' ', clip(f.agentEvidence.summary, MAX_SUMMARY)) : null),
     el('td', {}, el('span', { class: `chip chip-${f.status}` }, f.status)),
     el('td', { class: 'sig' }, f.confirmation ? el('div', { class: 'small' }, el('strong', {}, f.confirmation.by), el('div', { class: 'mono mute' }, fmtTime(f.confirmation.at)), el('div', { class: 'mute' }, f.confirmation.basis)) : el('span', { class: 'mute' }, f.status === 'unsure' ? 'nobody can sign this — that is the finding' : '—')),
     el('td', { class: 'acts' },
-      f.status !== 'confirmed' ? btn('Confirm', 'btn-primary', () => d.confirmFact(f.id)) : null,
-      f.status !== 'pending' ? btn('Pending', '', () => d.setFact(f.id, 'pending')) : null,
-      f.status !== 'unsure' ? btn('Unsure', '', () => d.setFact(f.id, 'unsure')) : null));
+      f.status !== 'confirmed' ? btnEl('Confirm', 'btn-primary', () => d.confirmFact(f.id)) : null,
+      f.status !== 'pending' ? btnEl('Pending', '', () => d.setFact(f.id, 'pending')) : null,
+      f.status !== 'unsure' ? btnEl('Unsure', '', () => d.setFact(f.id, 'unsure')) : null));
 }
 
 export function renderFacts(s: RoomState, d: Dispatch): HTMLElement {

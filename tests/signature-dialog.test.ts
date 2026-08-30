@@ -37,4 +37,20 @@ describe('askSignature — fixed-overlay signature form', () => {
     expect(result).toBeNull();
     expect(document.querySelector('.sig-scrim')).toBeNull();
   });
+
+  it('clicking the scrim itself cancels, removes the overlay, and lifts inert from #app', async () => {
+    let app = document.getElementById('app');
+    if (!app) { app = document.createElement('div'); app.id = 'app'; document.body.appendChild(app); }
+
+    const promise = askSignature('Confirm', 'basis');
+    expect(app.hasAttribute('inert')).toBe(true);
+
+    const scrim = document.querySelector('.sig-scrim') as HTMLElement;
+    scrim.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+
+    const result = await promise;
+    expect(result).toBeNull();
+    expect(document.querySelector('.sig-scrim')).toBeNull();
+    expect(app.hasAttribute('inert')).toBe(false);
+  });
 });

@@ -1,20 +1,19 @@
 import type { Material, RoomState } from '../engine/types';
 import type { Dispatch } from './app';
-import { el, fmtTime } from './dom';
-
-const btn = (label: string, cls: string, on: () => void) => { const b = el('button', { type: 'button', class: `btn ${cls}` }, label); b.addEventListener('click', on); return b; };
+import { MAX_SUMMARY } from '../engine/constants';
+import { btnEl, clip, el, fmtTime } from './dom';
 
 function row(m: Material, d: Dispatch): HTMLElement {
   return el('tr', { class: `state-${m.state}` },
     el('td', { class: 'mono mute' }, m.id),
     el('td', {}, el('div', {}, m.title), m.note ? el('div', { class: 'mute small' }, m.note) : null,
-      m.agentEvidence ? el('div', { class: 'small evid' }, el('span', { class: 'tag tag-agent' }, 'agent proposed'), ' ', m.agentEvidence.summary) : null),
+      m.agentEvidence ? el('div', { class: 'small evid' }, el('span', { class: 'tag tag-agent' }, 'agent proposed'), ' ', clip(m.agentEvidence.summary, MAX_SUMMARY)) : null),
     el('td', {}, el('span', { class: `chip chip-${m.state}` }, m.state),
       m.confirmation ? el('div', { class: 'small mute' }, `confirmed by ${m.confirmation.by} · ${fmtTime(m.confirmation.at)} · ${m.confirmation.basis}`) : null),
     el('td', { class: 'acts' },
-      m.state !== 'provided' ? btn('Confirm provided', 'btn-primary', () => d.confirmMaterialProvided(m.id)) : null,
-      m.state !== 'pending' ? btn('Pending', '', () => d.setMaterial(m.id, 'pending')) : null,
-      m.state !== 'nonexistent' ? btn('Nonexistent', '', () => d.setMaterial(m.id, 'nonexistent')) : null));
+      m.state !== 'provided' ? btnEl('Confirm provided', 'btn-primary', () => d.confirmMaterialProvided(m.id)) : null,
+      m.state !== 'pending' ? btnEl('Pending', '', () => d.setMaterial(m.id, 'pending')) : null,
+      m.state !== 'nonexistent' ? btnEl('Nonexistent', '', () => d.setMaterial(m.id, 'nonexistent')) : null));
 }
 
 export function renderMaterials(s: RoomState, d: Dispatch): HTMLElement {

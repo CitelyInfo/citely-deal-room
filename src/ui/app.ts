@@ -20,13 +20,14 @@ export interface Dispatch {
   freeze(): void;
   reset(): void;
 }
-export interface UiCtx { store: Store; dispatch: Dispatch; agentStatus: string; lastChanged: Set<string> }
+export interface UiCtx { store: Store; dispatch: Dispatch; agentStatus: string }
 
 type Tab = 'materials' | 'facts' | 'actions';
 
 export function mountApp(root: HTMLElement, ctx: UiCtx): void {
   let tab: Tab = 'materials';
   let briefSel: number | null = null;
+  const flash = new Set<string>();
 
   const render = () => {
     const s = ctx.store.state;
@@ -43,7 +44,7 @@ export function mountApp(root: HTMLElement, ctx: UiCtx): void {
       el('main', { class: 'layout' },
         el('aside', { class: 'left' },
           renderEventCard(s.event),
-          renderBlockers(ctx.store.schema, ctx.store.blockers(), ctx.lastChanged),
+          renderBlockers(ctx.store.schema, ctx.store.blockers(), flash),
           renderEscalations(s, ctx.dispatch),
           renderBrief(s, ctx.dispatch, briefSel, v => { briefSel = v; render(); })),
         el('section', { class: 'right' },
@@ -51,6 +52,6 @@ export function mountApp(root: HTMLElement, ctx: UiCtx): void {
           el('section', { class: 'card panel' }, panel),
           evidence)));
   };
-  ctx.store.subscribe(render);
+  ctx.store.subscribe((_s, changed) => { flash.clear(); changed.forEach(id => flash.add(id)); render(); });
   render();
 }

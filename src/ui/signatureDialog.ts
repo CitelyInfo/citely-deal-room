@@ -16,6 +16,8 @@ export function askSignature(title: string, defaultBasis: string): Promise<Confi
     const modal = el('div', { class: 'sig-modal', role: 'dialog', 'aria-modal': 'true', 'aria-label': title }, form);
     const scrim = el('div', { class: 'sig-scrim', role: 'presentation' }, modal);
     document.body.appendChild(scrim);
+    const app = document.getElementById('app');
+    app?.setAttribute('inert', '');
 
     let finished = false;
     const onKeydown = (e: KeyboardEvent) => { if (e.key === 'Escape') done(null); };
@@ -24,6 +26,7 @@ export function askSignature(title: string, defaultBasis: string): Promise<Confi
       finished = true;
       document.removeEventListener('keydown', onKeydown);
       scrim.remove();
+      app?.removeAttribute('inert');
       resolve(c);
     };
 
