@@ -1,0 +1,102 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R 5 0 R] /Count 2 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 7 0 R >> >> /Contents 4 0 R >>
+endobj
+4 0 obj
+<< /Length 1827 >>
+stream
+BT /F1 10 Tf 56 736 Td 14 TL
+() Tj T*
+(MASTER SERVICES AND DATA LICENSE AGREEMENT ? DRAFT V0.4) Tj T*
+() Tj T*
+() Tj T*
+(Synthetic document for demonstration. Counterparty is "a frontier lab" \(unnamed\). Not legal) Tj T*
+(advice.) Tj T*
+() Tj T*
+() Tj T*
+(1. DEFINITIONS) Tj T*
+() Tj T*
+("Dataset" means the teleoperation trajectories, video and metadata delivered by Vendor under) Tj T*
+(an Order Form.) Tj T*
+("Permitted Use" ? [TO BE DEFINED]) Tj T*
+() Tj T*
+() Tj T*
+(2. DELIVERY) Tj T*
+() Tj T*
+(Vendor delivers Datasets per the Order Form with per-record lineage metadata \(timestamp,) Tj T*
+(site, device, operator id\).) Tj T*
+() Tj T*
+() Tj T*
+(3. LICENSE GRANT) Tj T*
+() Tj T*
+(Vendor grants Customer a non-exclusive license to use the Dataset for the Permitted Use.) Tj T*
+(3.1 Training rights: [not addressed]) Tj T*
+(3.2 Sublicensing and derivative-model rights: [not addressed]) Tj T*
+(3.3 Exclusivity: [not addressed]) Tj T*
+() Tj T*
+() Tj T*
+(4. FEES) Tj T*
+() Tj T*
+(Per Order Form.) Tj T*
+() Tj T*
+() Tj T*
+(9. REPRESENTATIONS AND WARRANTIES OF VENDOR) Tj T*
+() Tj T*
+(9.1 Vendor has the right to enter this Agreement.) Tj T*
+(9.2 Vendor warrants that all necessary consents and authorizations have been obtained from) Tj T*
+(every individual whose likeness, voice or biometric identifiers appear in the Dataset.) Tj T*
+(9.3 Vendor warrants that the Dataset was collected in compliance with Vendor's published) Tj T*
+(privacy policy and retention schedule.) Tj T*
+(9.4 Vendor warrants that it owns or has assigned to it all intellectual property in) Tj T*
+(operator-generated trajectories.) Tj T*
+(9.5 Vendor warrants that no minors appear in the Dataset.) Tj T*
+(9.6 Vendor warrants that the Dataset contains no scraped or open-source data unless) Tj T*
+(disclosed in Schedule C.) Tj T*
+() Tj T*
+() Tj T*
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 7 0 R >> >> /Contents 6 0 R >>
+endobj
+6 0 obj
+<< /Length 304 >>
+stream
+BT /F1 10 Tf 56 736 Td 14 TL
+(10. INDEMNIFICATION) Tj T*
+() Tj T*
+([Customer template to follow]) Tj T*
+() Tj T*
+() Tj T*
+(11. SECURITY) Tj T*
+() Tj T*
+(Vendor maintains SOC 2 Type II or an equivalent attestation acceptable to Customer's) Tj T*
+(security team \(see Security Questionnaire §7\).) Tj T*
+ET
+endstream
+endobj
+7 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 8
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000121 00000 n 
+0000000247 00000 n 
+0000002126 00000 n 
+0000002252 00000 n 
+0000002607 00000 n 
+trailer
+<< /Size 8 /Root 1 0 R >>
+startxref
+2677
+%%EOF
