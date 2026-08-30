@@ -12,10 +12,16 @@ PAGE_W, PAGE_H, MARGIN, LEADING, FONT_SIZE, LINES_PER_PAGE = 612, 792, 56, 14, 1
 def esc(s: str) -> str:
     return s.replace("\\", "\\\\").replace("(", "\\(").replace(")", "\\)")
 
+PUNCT = {"—": "-", "–": "-", "’": "'", "‘": "'", "“": '"', "”": '"', "…": "..."}
+def normalize(s: str) -> str:
+    for k, v in PUNCT.items():
+        s = s.replace(k, v)
+    return s
+
 def md_to_lines(md: str) -> list[str]:
     out: list[str] = []
     for raw in md.splitlines():
-        line = raw.rstrip()
+        line = normalize(raw.rstrip())
         if line.startswith("#"):
             out += ["", line.lstrip("# ").upper(), ""]
         elif not line:
