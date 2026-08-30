@@ -1,0 +1,49 @@
+{
+  "event_type": "frontier-lab-vendor-review",
+  "doors": [
+    { "id": 1, "name": "Security review" },
+    { "id": 2, "name": "Privacy & data compliance" },
+    { "id": 3, "name": "Legal & license terms" }
+  ],
+  "blockers": [
+    {
+      "id": "b1", "door": 1,
+      "title": "Security questionnaire §2 (data handling) asks for per-record provenance — lineage records not yet provided",
+      "mitigation": "Provide the lineage log format and a sample export.",
+      "open_when": { "any_material_not": { "ids": ["m1"], "state": "provided" } }
+    },
+    {
+      "id": "b2", "door": 1,
+      "title": "Security questionnaire §7 requires SOC 2 Type II or equivalent — neither exists",
+      "mitigation": "Negotiate the questionnaire-alternative path and shrink the pilot data scope; do not start SOC 2 inside this window.",
+      "open_when": { "any_material_not": { "ids": ["m9"], "state": "provided" } }
+    },
+    {
+      "id": "b3", "door": 3,
+      "title": "License draft §9.2 asks you to warrant that 'all necessary consents and authorizations have been obtained' — cannot be warranted while operator biometric consent (m4) and bystander policy (m5) are missing",
+      "mitigation": "Escalate consent drafting to counsel (see escalation record); until then, carve consent scope out of the warranty.",
+      "open_when": { "any_material_not": { "ids": ["m4", "m5"], "state": "provided" } }
+    },
+    {
+      "id": "b4", "door": 3,
+      "title": "License draft leaves training rights and sublicensing undefined — the lab's legal team will mark this up, and it is your only pricing lever",
+      "mitigation": "Table your own definition before the lab sends its template.",
+      "open_when": { "any_material_not": { "ids": ["m7"], "state": "provided" } }
+    },
+    {
+      "id": "b5", "door": 3,
+      "title": "License draft §9.4 asks you to warrant IP ownership of operator trajectories — operator agreements (m2) are not provided and the IP-assignment fact (f1) is unconfirmed",
+      "mitigation": "Countersign an IP-assignment addendum with every operator, then confirm f1.",
+      "open_when": { "all_of": [
+        { "any_material_not": { "ids": ["m2"], "state": "provided" } },
+        { "fact_status_in": { "ids": ["f1"], "statuses": ["pending", "unsure"] } }
+      ] }
+    },
+    {
+      "id": "b6", "door": 3,
+      "title": "License draft §9.5 asks you to warrant 'no minors appear in the data' — nobody on the team can confirm it",
+      "mitigation": "Stand up an age-screening step and sample the first batch.",
+      "open_when": { "fact_status_in": { "ids": ["f3"], "statuses": ["unsure", "pending"] } }
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "case_id": "northstar-frontier-lab-pilot",
+  "synthetic": true,
+  "event": {
+    "title": "Northstar Capture Labs × frontier-lab data supply pilot",
+    "counterparty": "A frontier lab's procurement, security review, and legal — three doors, in that order",
+    "deadline": "2026-10-15 target MSA signature · pilot start 2026-09-30",
+    "passConditions": [
+      "Security questionnaire accepted at vendor onboarding",
+      "DPA signed",
+      "Reps & warranties in the data license are ones the founder can sign"
+    ],
+    "backPlannedDeadline": "SOC 2 Type II is absent and takes 3–6 months — longer than this window. The action is therefore 'negotiate a questionnaire alternative and shrink pilot scope', not 'go get SOC 2'.",
+    "decisionMaker": "Founder / CEO (no general counsel at this stage)",
+    "outOfScope": ["Next-round fundraising diligence", "A second lab", "Overseas capture-site expansion"]
+  },
+  "materials": [
+    { "id": "m1", "title": "Data lineage records (time / site / device / operator per trajectory)", "note": "Usually recorded natively by the capture pipeline — the client's strongest provable asset", "state": "pending" },
+    { "id": "m2", "title": "Teleoperator agreements", "note": "Check for an IP-assignment clause — a common gap", "state": "pending" },
+    { "id": "m3", "title": "Worker-classification analysis (contractor vs employee)", "note": "Most teams default to 1099 with no written analysis", "state": "nonexistent" },
+    { "id": "m4", "title": "Operator likeness / biometric consent", "note": "First-person data captures hands, voice, home environment", "state": "pending" },
+    { "id": "m5", "title": "Bystander & scene authorization policy", "note": "Third parties entering frame during in-store / in-home capture", "state": "pending" },
+    { "id": "m6", "title": "Privacy policy + retention & deletion policy (data-business version)", "state": "pending" },
+    { "id": "m7", "title": "Data license term sheet (training rights / sublicensing / exclusivity)", "note": "Usually waits for the lab's template — all negotiating leverage lost", "state": "pending" },
+    { "id": "m8", "title": "Disclosure of open-source / scraped data in demo models", "state": "nonexistent" },
+    { "id": "m9", "title": "Security questionnaire draft / SOC 2 report", "note": "Source of the back-planned deadline", "state": "nonexistent" },
+    { "id": "m10", "title": "E&O / cyber insurance certificate", "state": "pending" },
+    { "id": "m11", "title": "Crowdsourcing / subcontractor platform agreements", "state": "pending" },
+    { "id": "m12", "title": "Overseas capture-site compliance files", "note": "Only if any operators are outside the US", "state": "pending" }
+  ],
+  "facts": [
+    { "id": "f1", "statement": "Every operator agreement contains an IP-assignment clause", "status": "pending", "owner": "Head of Operations", "basis": "Agreement template v2 + signature log" },
+    { "id": "f2", "statement": "All capture takes place at owned or leased sites", "status": "confirmed", "owner": "Head of Operations", "basis": "Site register", "confirmation": { "by": "Dana Whitfield, Head of Operations", "at": "2026-08-27T16:10:00Z", "basis": "Site register (12 sites)" } },
+    { "id": "f3", "statement": "No minors appear in the captured data", "status": "unsure", "owner": "—", "basis": "No age-screening step exists" },
+    { "id": "f4", "statement": "Demo models were trained without external public datasets", "status": "pending", "owner": "Engineering Lead", "basis": "Training logs" }
+  ],
+  "actions": [
+    { "id": "a1", "task": "Countersign IP-assignment addendum with all operators", "owner": "Client · Operations", "due": "D+10", "status": "open", "evidenceOfCompletion": "Complete signature log" },
+    { "id": "a2", "task": "Assemble consent-drafting packet and refer to US counsel", "owner": "Citely", "due": "D+5", "status": "open", "evidenceOfCompletion": "Packet sent + counsel acknowledges receipt" },
+    { "id": "a3", "task": "Propose questionnaire-alternative path to the lab", "owner": "Client · CEO", "due": "D+7", "status": "open", "evidenceOfCompletion": "Written reply from the lab" },
+    { "id": "a4", "task": "Stand up age-screening process", "owner": "Client · Operations", "due": "D+14", "status": "open", "evidenceOfCompletion": "Process doc + first sampled batch" }
+  ],
+  "escalations": [
+    {
+      "id": "e1", "kind": "referral",
+      "trigger": "Drafting biometric consent forms and characterizing state-by-state exposure is a conclusion-type, signature-type deliverable.",
+      "packet": ["Operator state distribution", "Existing consent text (none)", "Capture-scene inventory"],
+      "handoff": "US counsel — project continues; escalation is part of the deliverable, not a failure."
+    }
+  ]
+}
