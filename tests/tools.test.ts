@@ -7,6 +7,8 @@ import { DISCLAIMER, NOTE_TO_AGENT } from '../src/engine/constants';
 import schema from '../config/room-schema.json';
 import caseFile from '../config/case-northstar.json';
 import type { RoomSchema, CaseFile } from '../src/engine/types';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 
 const S = schema as RoomSchema;
 const ev = { summary: 'agreement exists; no IP assignment clause found', source_kind: 'docs', location: '~/Desktop/operator-agreement-v2.pdf p.3' };
@@ -79,6 +81,11 @@ describe('D2 — hard stop', () => {
     expect((await tools.dealroom_get_blockers!.execute({})).ok).toBe(true);
     expect(store.state.materials.find(m => m.id === 'm4')!.agentEvidence).toBeUndefined();
   });
+  it('guard ordering: hard stop wins over invalid input', async () => {
+    const r = await tools.dealroom_propose_material!.execute({ material_id: 'm1', state: 'provided', evidence: ev });
+    expect(r.ok).toBe(false);
+    expect(r.error).toMatchObject({ code: 'HARD_STOP' });
+  });
 });
 
 describe('D3 — disclaimer verbatim on every response', () => {
@@ -108,11 +115,36 @@ describe('D4 — zero network', () => {
   });
   afterEach(() => { globalThis.fetch = originalFetch; globalThis.XMLHttpRequest = originalXHR; });
   it('full round trip makes no network call', async () => {
-    await tools.dealroom_get_room!.execute({});
-    await tools.dealroom_propose_material!.execute({ material_id: 'm5', state: 'nonexistent', evidence: ev });
-    await tools.dealroom_propose_fact_evidence!.execute({ fact_id: 'f4', evidence: ev });
-    await tools.dealroom_get_blockers!.execute({});
-    await tools.dealroom_get_brief!.execute({});
+    const r1 = await tools.dealroom_get_room!.execute({});
+    const r2 = await tools.dealroom_propose_material!.execute({ material_id: 'm5', state: 'nonexistent', evidence: ev });
+    const r3 = await tools.dealroom_propose_fact_evidence!.execute({ fact_id: 'f4', evidence: ev });
+    const r4 = await tools.dealroom_get_blockers!.execute({});
+    const r5 = await tools.dealroom_get_brief!.execute({});
+    for (const r of [r1, r2, r3, r4, r5]) expect(r.ok).toBe(true);
+  });
+});
+
+describe('D4 — static assertion: no network-shaped identifiers in src/', () => {
+  const NETWORK_PATTERN = /\b(fetch|XMLHttpRequest|WebSocket|sendBeacon|EventSource|navigator\.sendBeacon)\b|new Image\(|import\(/;
+  const srcDir = path.resolve(process.cwd(), 'src');
+
+  function walk(dir: string): string[] {
+    const out: string[] = [];
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) out.push(...walk(full));
+      else out.push(full);
+    }
+    return out;
+  }
+
+  it('no file under src/ references fetch/XHR/WebSocket/etc.', () => {
+    const offenders: string[] = [];
+    for (const file of walk(srcDir)) {
+      const contents = fs.readFileSync(file, 'utf8');
+      if (NETWORK_PATTERN.test(contents)) offenders.push(file);
+    }
+    expect(offenders).toEqual([]);
   });
 });
 
@@ -128,5 +160,18 @@ describe('D6 — human confirmation cannot be overridden', () => {
     const r = await tools.dealroom_propose_fact_evidence!.execute({ fact_id: 'f1', evidence: ev });
     expect(r.ok).toBe(false); expect(r.error).toMatchObject({ code: 'HUMAN_CONFIRMED' });
     expect(store.state.facts.find(f => f.id === 'f1')!.agentEvidence).toBeUndefined();
+  });
+});
+
+describe('execute error boundary — a throwing subscriber does not crash the tool response', () => {
+  it('propose_material still returns a well-formed response, and the state change is not lost', async () => {
+    store.subscribe(() => { throw new Error('listener boom'); });
+    const r = await tools.dealroom_propose_material!.execute({ material_id: 'm4', state: 'nonexistent', evidence: ev });
+    expect(r.ok).toBe(false);
+    expect(r.error).toMatchObject({ code: 'INTERNAL' });
+    expect(r.disclaimer).toBe(DISCLAIMER);
+    expect(r.note_to_agent).toBe(NOTE_TO_AGENT);
+    expect(['open', 'hard_stop']).toContain(r.room_status);
+    expect(store.state.materials.find(m => m.id === 'm4')!.state).toBe('nonexistent');
   });
 });
