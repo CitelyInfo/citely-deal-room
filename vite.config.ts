@@ -19,5 +19,5 @@ function cspOnBuild(): Plugin {
 export default defineConfig({
   plugins: [cspOnBuild()],
   build: { target: 'es2022', sourcemap: false },
-  test: { environment: 'jsdom', include: ['tests/**/*.test.ts'] },
+  test: { environment: 'jsdom', include: ['tests/**/*.test.ts'], setupFiles: ['tests/setup.ts'] },
 });

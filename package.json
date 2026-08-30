@@ -11,8 +11,8 @@
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
-  "dependencies": {},
   "devDependencies": {
+    "@types/jsdom": "^30.0.0",
     "jsdom": "^26.1.0",
     "typescript": "^5.8.3",
     "vite": "^7.0.0",
