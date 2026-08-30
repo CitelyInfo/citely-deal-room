@@ -1,0 +1,10 @@
+:root {
+  --paper: #f3f0e9; --paper-soft: #ece8df; --paper-card: #fffdf8;
+  --ink: #1a1714; --ink-soft: #4a4339; --ink-mute: #8a8278;
+  --line: #d9d2c5; --line-soft: #e6e0d4;
+  --crimson: #8B1F30; --crimson-hi: #A83245; --ok: #2f6b3f; --warn: #9a6b1a;
+  --font-sans: 'Inter', 'Noto Sans SC', 'PingFang SC', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-sans); font-size: 14px; line-height: 1.5; }
