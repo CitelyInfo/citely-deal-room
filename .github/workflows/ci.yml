@@ -12,6 +12,8 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
+      - name: CSP meta present in built page
+        run: grep -q "Content-Security-Policy" dist/index.html
       - name: no innerHTML / inline styles / external URLs in src
         run: |
           if grep -rn "innerHTML\|insertAdjacentHTML\|outerHTML" src/; then echo "forbidden DOM API"; exit 1; fi

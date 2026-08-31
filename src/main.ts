@@ -16,7 +16,7 @@ const store = new Store(S, loadFromStorage(base), saveToStorage);
 const dispatch: Dispatch = {
   async confirmMaterialProvided(id) {
     const m = store.state.materials.find(x => x.id === id)!;
-    const sig = await askSignature(`Confirm provided: ${m.title}`, m.agentEvidence?.location ?? '');
+    const sig = await askSignature(`Confirm provided: ${m.title}`, '');
     if (sig) store.update(s => setMaterialState(s, id, 'provided', { confirmation: sig }));
   },
   setMaterial(id, state) { store.update(s => setMaterialState(s, id, state, {})); },

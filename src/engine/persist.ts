@@ -36,9 +36,18 @@ export function toPersisted(s: RoomState): Persisted {
 export function fromPersisted(base: RoomState, p: Persisted): RoomState {
   return {
     ...base,
-    materials: base.materials.map(m => (p.materials[m.id] ? { ...m, ...p.materials[m.id] } : m)),
-    facts: base.facts.map(f => (p.facts[f.id] ? { ...f, ...p.facts[f.id] } : f)),
-    actions: base.actions.map(a => (p.actions[a.id] ? { ...a, ...p.actions[a.id] } : a)),
+    materials: base.materials.map(m => {
+      const pm = p.materials[m.id];
+      return pm ? { ...m, state: pm.state, confirmedByHuman: pm.confirmedByHuman, confirmation: pm.confirmation } : m;
+    }),
+    facts: base.facts.map(f => {
+      const pf = p.facts[f.id];
+      return pf ? { ...f, status: pf.status, confirmation: pf.confirmation } : f;
+    }),
+    actions: base.actions.map(a => {
+      const pa = p.actions[a.id];
+      return pa ? { ...a, status: pa.status, doneNote: pa.doneNote } : a;
+    }),
     hardStop: p.hardStop,
     briefs: p.briefs ?? [],
   };

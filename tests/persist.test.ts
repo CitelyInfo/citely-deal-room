@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { loadCase, toPersisted, fromPersisted, saveToStorage, loadFromStorage, clearStorage } from '../src/engine/persist';
 import { Store } from '../src/engine/store';
-import { setMaterialState, confirmFact, setHardStop } from '../src/engine/actions';
+import { setMaterialState, confirmFact, setFactStatus, setHardStop } from '../src/engine/actions';
 import { STORAGE_KEY } from '../src/engine/constants';
 import schema from '../config/room-schema.json';
 import caseFile from '../config/case-northstar.json';
@@ -26,6 +26,15 @@ describe('persistence', () => {
     expect(r.materials.find(m => m.id === 'm4')!.agentEvidence).toBeUndefined();
     expect(r.facts.find(f => f.id === 'f1')).toMatchObject({ status: 'confirmed', confirmation: sig });
     expect(r.hardStop).toBe(true);
+  });
+  it('a human revocation of a case-baked confirmation survives round-trip (does not resurrect)', () => {
+    // f2 ships confirmed in the case file itself; a human revokes it to 'unsure'.
+    const s = setFactStatus(fresh(), 'f2', 'unsure');
+    const p = toPersisted(s);
+    const r = fromPersisted(fresh(), p);
+    const f2 = r.facts.find(f => f.id === 'f2')!;
+    expect(f2.status).toBe('unsure');
+    expect(f2.confirmation).toBeUndefined();
   });
   it('save/load/clear via localStorage', () => {
     saveToStorage(setHardStop(fresh(), true));

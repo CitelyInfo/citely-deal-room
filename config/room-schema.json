@@ -44,6 +44,12 @@
       "title": "License draft §9.5 asks you to warrant 'no minors appear in the data' — nobody on the team can confirm it",
       "mitigation": "Stand up an age-screening step and sample the first batch.",
       "open_when": { "fact_status_in": { "ids": ["f3"], "statuses": ["unsure", "pending"] } }
+    },
+    {
+      "id": "b7", "door": 2,
+      "title": "The lab's DPA template §4 requires a written retention & deletion schedule — the data-business privacy policy (m6) is not provided",
+      "mitigation": "Draft the data-business retention schedule; the consumer-site policy does not cover it.",
+      "open_when": { "any_material_not": { "ids": ["m6"], "state": "provided" } }
     }
   ]
 }
