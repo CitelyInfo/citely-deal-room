@@ -1,7 +1,7 @@
 # Citely Deal Room — WebMCP demo
 
 > **Demo with a synthetic case — not a live service. Do not enter real company data.**
-> Live: _(URL added at deploy)_ · License: MIT · Built for the OpenAI WebMCP Challenge (Aug 25 – Sep 3, 2026).
+> Live: **https://citely-deal-room.vercel.app** · Repo: https://github.com/web3yaso/citely-deal-room-demo · License: MIT · Built for the OpenAI WebMCP Challenge (Aug 25 – Sep 3, 2026).
 
 A Deal Room is a case workbench opened for one business event — here, a teleoperation data vendor (**Northstar Capture Labs**, fictional) trying to pass a frontier lab's vendor review: three doors (security, privacy, legal), one deadline, warranties the founder has to be able to sign.
 
