@@ -9,7 +9,7 @@ Three sources, three different "defects", one board:
 | GitHub (this repo, `pipeline/`) | `lineage.py` | Four-field lineage logging is present | m1 → `pending`, evidence "lineage logging found; awaiting human confirmation" |
 | Nowhere | — | No consent artifacts anywhere | m4, m5 → `nonexistent` |
 
-Demo instruction (verbatim): **"Read the operator agreement PDF on my desktop and our pipeline repo on GitHub, then update the deal room."**
+Demo instruction (verbatim — attach `operator-agreement-v2.pdf` to the chat first; agents cannot read your desktop on their own): **"Read the attached operator agreement and the pipeline/ directory of this repo on GitHub, then update the deal room."** If your agent cannot browse GitHub, attach `pipeline/lineage.py` as well.
 
 `.md` files are the sources; `.pdf` files are built by `python3 demo-materials/build-pdfs.py` (stdlib only). If the agent's PDF reading is poor, hand it the `.md` — the story is unchanged.
 All content is synthetic.

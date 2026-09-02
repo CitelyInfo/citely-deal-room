@@ -39,7 +39,7 @@ The agent sits below all three: it can only gather and propose. Blockers are anc
 
 1. Open the live URL in the **ChatGPT desktop app's in-app browser** (WebMCP on by default) or **Chrome 149+** with `chrome://flags/#enable-webmcp-testing` enabled.
 2. Copy `demo-materials/operator-agreement-v2.pdf` to your desktop.
-3. Tell the agent: **"Read the operator agreement PDF on my desktop and our pipeline repo on GitHub, then update the deal room."**
+3. Attach `operator-agreement-v2.pdf` to the chat (most agent runtimes cannot read your desktop on their own) and tell the agent: **"Read the attached operator agreement and the pipeline/ directory of this repo on GitHub, then update the deal room."** If the agent cannot browse GitHub, attach `pipeline/lineage.py` too.
 4. Watch the blockers; then confirm m1 as provided yourself (signature dialog) and watch the Door 1 lineage blocker clear.
 5. The PDF's last clause tries to instruct the reviewer to mark everything provided. Nothing happens — there is no such verb.
 6. Tick "Legal claim received" and ask the agent to propose again: refused. Untick, click **Freeze Brief**.
