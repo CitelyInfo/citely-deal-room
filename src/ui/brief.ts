@@ -21,7 +21,7 @@ export function renderBrief(s: RoomState, d: Dispatch, selected: number | null, 
   const chosen = selected === null ? undefined : s.briefs.find(b => b.version === selected);
   return el('section', { class: 'card brief' },
     el('h2', {}, 'Founder Risk Brief'),
-    el('p', { class: 'mute small' }, 'The board is the authority; a Brief is a frozen, versioned snapshot of it. Human-only — there is no tool for this.'),
+    el('p', { class: 'mute small' }, 'The board is the authority; a Brief is a frozen, versioned snapshot of it — kept here and downloaded as Markdown. Human-only — there is no tool for this.'),
     el('div', { class: 'row' }, btn, sel),
     chosen ? snapshotView(chosen) : null);
 }

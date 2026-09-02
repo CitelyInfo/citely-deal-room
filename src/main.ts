@@ -8,6 +8,8 @@ import { createTools } from './webmcp/tools';
 import { detectModelContext, registerDealRoomTools } from './webmcp/adapter';
 import { mountApp, type Dispatch, type UiCtx } from './ui/app';
 import { askSignature } from './ui/signatureDialog';
+import { downloadText } from './ui/download';
+import { briefFilename, briefToMarkdown } from './engine/briefMarkdown';
 
 const S = schema as RoomSchema;
 const base = loadCase(caseFile as CaseFile);
@@ -28,7 +30,11 @@ const dispatch: Dispatch = {
   setFact(id, status) { store.update(s => setFactStatus(s, id, status)); },
   toggleAction(id) { store.update(s => toggleAction(s, id)); },
   setHardStop(on) { store.update(s => setHardStop(s, on)); },
-  freeze() { store.update(s => freezeBrief(s, store.blockers(), new Date().toISOString())); },
+  freeze() {
+    store.update(s => freezeBrief(s, store.blockers(), new Date().toISOString()));
+    const brief = store.state.briefs[store.state.briefs.length - 1];
+    if (brief) downloadText(briefFilename(brief), briefToMarkdown(brief));
+  },
   reset() { clearStorage(); store.update(() => structuredClone(base)); },
 };
 
