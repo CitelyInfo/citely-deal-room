@@ -18,6 +18,14 @@ function cspOnBuild(): Plugin {
 
 export default defineConfig({
   plugins: [cspOnBuild()],
-  build: { target: 'es2022', sourcemap: false },
+  build: {
+    target: 'es2022', sourcemap: false,
+    rollupOptions: {
+      input: {
+        room: new URL('./index.html', import.meta.url).pathname,
+        caseStudy: new URL('./case-study/index.html', import.meta.url).pathname,
+      },
+    },
+  },
   test: { environment: 'jsdom', include: ['tests/**/*.test.ts'], setupFiles: ['tests/setup.ts'] },
 });

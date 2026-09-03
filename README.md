@@ -56,6 +56,10 @@ No server, no network requests (a test stubs `fetch`/`XMLHttpRequest` to throw a
 
 ## Develop
 
+### Website case study
+
+Open `/case-study/` for the standalone Chinese client-facing case study. It pairs a simulated Codex conversation with a live, isolated copy of the Deal Room state. Visitors can advance manually, play/pause, reset, and simulate the final human confirmation. The scripted calls reuse the existing tool implementations; this presentation does not connect to Codex, register tools, read files, or persist demo state. The original interactive Deal Room remains at `/`.
+
 ```
 npm install
 npm run dev        # http://localhost:5173
