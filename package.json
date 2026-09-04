@@ -6,9 +6,10 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build --outDir .invite-build && node scripts/build-invite-server.mjs",
+    "build:static": "vite build",
     "preview": "vite preview",
-    "test": "vitest run",
+    "test": "vitest run && node --test tests/invite-gate.test.mjs",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {},
