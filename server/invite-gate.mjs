@@ -6,7 +6,9 @@ const securityHeaders = {
   'Vary': 'Cookie',
   'X-Content-Type-Options': 'nosniff',
   'X-Frame-Options': 'DENY',
-  'Referrer-Policy': 'no-referrer',
+  // no-referrer makes native POST forms send Origin: null. Keep the origin
+  // for our own forms while still withholding referrers from other sites.
+  'Referrer-Policy': 'same-origin',
   'X-Robots-Tag': 'noindex, nofollow, noarchive',
   'Content-Security-Policy': "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'",
 };

@@ -22,6 +22,7 @@ test('login page contains no secrets or case contents and missing config fails c
   const response = await handleRequest(request('/invite'), env, assets);
   const html = await response.text();
   assert.equal(response.status, 200);
+  assert.equal(response.headers.get('Referrer-Policy'), 'same-origin', 'native POST forms must retain their Origin');
   assert.ok(html.includes('邀请码'));
   assert.ok(!html.includes(env.INVITE_CODE) && !html.includes(env.INVITE_SESSION_SECRET));
   assert.equal((await handleRequest(request('/'), {}, assets)).status, 503);
@@ -29,6 +30,7 @@ test('login page contains no secrets or case contents and missing config fails c
 test('wrong codes, cross-origin forms and oversized submissions are rejected', async () => {
   assert.equal((await handleRequest(post('incorrect'), env, assets)).status, 401);
   assert.equal((await handleRequest(post(env.INVITE_CODE, 'https://attacker.test'), env, assets)).status, 403);
+  assert.equal((await handleRequest(post(env.INVITE_CODE, 'null'), env, assets)).status, 403);
   assert.equal((await handleRequest(post('x'.repeat(1100)), env, assets)).status, 400);
 });
 test('correct code grants secure cookie access to pages and assets', async () => {
