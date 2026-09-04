@@ -9,7 +9,7 @@ import { setMaterialState } from './engine/actions';
 const root = document.getElementById('case-study')!;
 root.innerHTML = `
   <header class="site-header wrap">
-    <a class="wordmark" href="#" aria-label="Citely 案例首页"><span class="brand-symbol">c</span>citely<span class="wordmark-dot">.</span></a>
+    <a class="wordmark" href="#" aria-label="Citely 案例首页"><img src="/brand/citely-mark.png" alt="" width="24" height="24" />Citely</a>
     <nav aria-label="页面导航"><a href="#experience">交互演示</a><a href="#approach">如何实现</a><a class="nav-link" href="/">打开 Deal Room <span aria-hidden="true">↗</span></a></nav>
   </header>
   <main>
@@ -33,7 +33,7 @@ root.innerHTML = `
     </section>
     <section class="approach wrap" id="approach"><div class="approach-intro"><span class="eyebrow">FROM CONVERSATION TO ACTION</span><h2>从一句话，<br>到有据可查的下一步。</h2><p>WebMCP 让网页向 AI 提供结构化工具。<br>在这个案例中，我们把它接入了交易准备流程。</p><a class="text-link" href="https://developer.chrome.com/docs/ai/agents" target="_blank" rel="noopener noreferrer">了解 WebMCP <span aria-hidden="true">↗</span></a></div><div class="principles"><article><span>01</span><div><h3>看见业务上下文</h3><p>读取同一份交易室：材料、事实与阻塞项。让 AI 的下一步建立在当前状态之上。</p></div></article><article><span>02</span><div><h3>让每条建议带上证据</h3><p>通过明确的工具，把发现和来源写回材料卡片。你可以看见发生了什么，以及为什么。</p></div></article><article><span>03</span><div><h3>把确认权留给人</h3><p>AI 只能取证和提议。材料确认、事实签署和简报冻结，仍由人完成。</p></div></article></div></section>
     <section class="closing wrap"><div><span class="eyebrow">EXPLORE THE CASE</span><h2>让你的业务系统，<br>成为 AI 能协作的工作台。</h2></div><div><a class="primary" href="/">探索完整 Deal Room <span aria-hidden="true">↗</span></a><p>查看实际工作台与 WebMCP 工具接入</p></div></section>
-  </main><footer class="wrap"><a class="wordmark" href="#">citely<span class="wordmark-dot">.</span></a><p>WebMCP 案例展示 · 合成数据，不构成法律意见</p><span>BUILT FOR HUMAN + AI</span></footer>`;
+  </main><footer class="wrap"><a class="wordmark" href="#" aria-label="Citely 案例首页"><img src="/brand/citely-mark.png" alt="" width="22" height="22" />Citely</a><p>WebMCP 案例展示 · 合成数据，不构成法律意见</p><span>BUILT FOR HUMAN + AI</span></footer>`;
 
 const el = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
 const labels = ['提出任务', '读取交易室', '添加材料证据', '查看待解决事项', '由你确认'];
