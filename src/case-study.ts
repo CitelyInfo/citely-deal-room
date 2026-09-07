@@ -10,7 +10,7 @@ const root = document.getElementById('case-study')!;
 root.innerHTML = `
   <header class="site-header wrap">
     <a class="wordmark" href="#" aria-label="Citely 案例首页"><img src="/brand/citely-mark.png" alt="" width="24" height="24" />Citely</a>
-    <nav aria-label="页面导航"><a href="#experience">交互演示</a><a href="#approach">如何实现</a><a class="nav-link" href="/">打开 Deal Room <span aria-hidden="true">↗</span></a></nav>
+    <nav aria-label="页面导航"><a href="#experience">交互演示</a><a href="#approach">如何实现</a><div class="lang-toggle" role="group" aria-label="语言"><button type="button" data-lang="zh" aria-pressed="true">中</button><span>/</span><button type="button" data-lang="en" aria-pressed="false">EN</button></div><a class="nav-link" href="/">打开 Deal Room <span aria-hidden="true">↗</span></a></nav>
   </header>
   <main>
     <section class="hero wrap">
@@ -36,7 +36,52 @@ root.innerHTML = `
   </main><footer class="wrap"><a class="wordmark" href="#" aria-label="Citely 案例首页"><img src="/brand/citely-mark.png" alt="" width="22" height="22" />Citely</a><p>WebMCP 案例展示 · 合成数据，不构成法律意见</p><form action="/invite/logout" method="post" class="invite-logout"><button type="submit">退出访问</button></form></footer>`;
 
 const el = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
-const labels = ['提出任务', '读取交易室', '添加材料证据', '查看待解决事项', '由你确认'];
+type Language = 'zh' | 'en';
+const translations: Record<string, string> = {
+  '页面导航': 'Page navigation', '交互演示': 'Interactive demo', '如何实现': 'How it works', '语言': 'Language',
+  '打开 Deal Room': 'Open Deal Room', 'WEBMCP 案例': 'WEBMCP CASE', '让 AI 走进': 'Bring AI into', '你的': 'your ', '业务现场': 'business workflow',
+  '一句指令，连接对话与行动。': 'One instruction connects conversation to action.', '看看 Codex 如何通过 WebMCP 整理交易材料，': 'See how Codex uses WebMCP to organize deal materials,',
+  '把证据带回工作台，把决定留给你。': 'bringing evidence into the workspace while leaving decisions to you.', '体验完整流程': 'Experience the workflow',
+  '你的业务系统': 'Your business system', '以 Citely Deal Room 为例': 'Using Citely Deal Room as an example,', '为 AI 开放明确、可控的网页操作。': 'we expose clear, controlled web actions to AI.',
+  '业务协作': 'Business collaboration', '人在回路': 'Human in the loop', '一边对话，一边推进。': 'Move work forward as you talk.',
+  '交互模拟 · 虚构案例数据': 'Interactive simulation · Synthetic case data', 'Codex 工作流': 'Codex workflow', '模拟 Codex 对话': 'Simulated Codex conversation', '模拟对话': 'Simulated conversation',
+  '检查这笔合作的数据溯源材料，整理证据，并告诉我还有哪些事情需要确认。': 'Review the data-lineage materials for this deal, organize the evidence, and tell me what still needs confirmation.',
+  '按下方步骤，查看任务如何完成': 'Follow the steps below to see the task completed', '同步更新的交易室': 'Deal Room updating in sync', '演示工作台': 'Demo workspace', '供应商准入': 'Vendor onboarding',
+  '前沿模型实验室 · 数据供应试点': 'Frontier model lab · Data supply pilot', '审核关卡': 'Review gates', '道': 'gates', '待解决事项': 'Open blockers', '材料确认': 'Materials confirmed',
+  '关键材料': 'Key materials', '当前演示关注项': 'Items in this demo', '数据溯源记录': 'Data lineage records', '采集时间、场地、设备与操作员': 'Capture time, site, device, and operator',
+  '安全问卷 / SOC 2 报告': 'Security questionnaire / SOC 2 report', '需与合作方协商替代审核路径': 'Alternative review path must be negotiated', '不存在': 'Not available',
+  '操作员协议': 'Operator agreements', '知识产权条款仍待核验': 'IP assignment terms need review', 'Codex 已添加证据': 'Evidence added by Codex', '待人工核验': 'Human review required',
+  '待提供': 'Pending', '。': '.',
+  '采集流程记录了时间、场地、设备和操作员字段。建议核验样本导出后确认材料。': 'The capture pipeline records time, site, device, and operator fields. Verify a sample export before confirming the material.',
+  'AI 整理证据，你来确认事实。': 'AI organizes evidence. You confirm the facts.', '添加证据不会自动把材料标记为「已提供」。': 'Adding evidence never marks a material as “provided” automatically.',
+  '模拟人工确认：材料已提供': 'Simulate human confirmation: material provided', '演示步骤': 'Demo steps', '重置': 'Reset', '下一步': 'Next',
+  'Codex 对话与调用过程为预设模拟；工作台复用本项目的工具逻辑。本页不连接真实 Codex，也不读取你的文件。': 'The Codex conversation and calls are a scripted simulation. The workspace reuses this project’s real tool logic. This page does not connect to Codex or read your files.',
+  '从一句话，': 'From one instruction', '到有据可查的下一步。': 'to an evidence-backed next step.', 'WebMCP 让网页向 AI 提供结构化工具。': 'WebMCP lets a website offer structured tools to AI.', '在这个案例中，我们把它接入了交易准备流程。': 'In this case, we connect those tools to deal preparation.',
+  '了解 WebMCP': 'Learn about WebMCP', '看见业务上下文': 'See the business context', '读取同一份交易室：材料、事实与阻塞项。让 AI 的下一步建立在当前状态之上。': 'Read the same Deal Room—materials, facts, and blockers—so every AI action starts from the current state.',
+  '让每条建议带上证据': 'Attach evidence to every proposal', '通过明确的工具，把发现和来源写回材料卡片。你可以看见发生了什么，以及为什么。': 'Write findings and sources back to material cards through explicit tools, so you can see what happened and why.',
+  '把确认权留给人': 'Keep confirmation human', 'AI 只能取证和提议。材料确认、事实签署和简报冻结，仍由人完成。': 'AI can gather evidence and propose. People still confirm materials, sign facts, and freeze briefs.',
+  '让你的业务系统，': 'Turn your business system', '成为 AI 能协作的工作台。': 'into a workspace for AI collaboration.', '探索完整 Deal Room': 'Explore the full Deal Room', '查看实际工作台与 WebMCP 工具接入': 'See the working interface and WebMCP integration',
+  'WebMCP 案例展示 · 合成数据，不构成法律意见': 'WebMCP case study · Synthetic data · Not legal advice', '退出访问': 'Sign out', 'Citely 案例首页': 'Citely case study home',
+};
+const dynamic = {
+  zh: {
+    labels: ['提出任务', '读取交易室', '添加材料证据', '查看待解决事项', '由你确认'],
+    messages: ['我会先查看交易室，再整理溯源材料的证据。材料是否已提供，需要由你确认。', '已读取交易室：共 12 项材料、3 道审核关卡。数据溯源记录仍待提供，我会把相关发现附在材料卡片上。', '已将溯源字段及来源附到材料卡片。材料仍然是「待提供」，请核对实际记录和样本导出。', '当前仍有 7 个待解决事项。数据溯源这一项需要你确认材料；安全报告缺失等其他事项还需分别处理。', '请在右侧模拟确认数据溯源材料。确认完成后，工作台会重新计算待解决事项。'],
+    confirmed: '你已完成模拟确认。数据溯源阻塞项已解除，其余 6 项仍待处理。', status: ['待提供', '待确认', '已提供'], result: '✓ 证据有来源，确认有归属，业务状态同步更新。',
+    tools: ['读取当前业务状态', '为溯源材料添加证据', '重新检查待解决事项'], evidence: '模拟证据：采集流程记录时间、场地、设备与操作员字段；请人工核验样本导出。', failed: '演示暂时未能继续，请点击重置重新开始。', play: '自动播放演示', pause: '暂停演示', replay: '从头重播',
+  },
+  en: {
+    labels: ['Give the task', 'Read the Deal Room', 'Attach evidence', 'Check blockers', 'You confirm'],
+    messages: ['I’ll read the Deal Room first, then organize the lineage evidence. You decide whether the material is provided.', 'I found 12 materials across three review gates. The data-lineage records are still pending, so I’ll attach the relevant findings to that material.', 'I attached the lineage fields and their source. The material remains “pending”; please verify the records and a sample export.', 'Seven blockers remain. You need to confirm the lineage material; the missing security report and other items require separate action.', 'Confirm the data-lineage material in the workspace. The Deal Room will recalculate blockers after your confirmation.'],
+    confirmed: 'Simulation confirmed. The lineage blocker is resolved; six other blockers remain.', status: ['Pending', 'Needs confirmation', 'Provided'], result: '✓ Evidence has a source, confirmation has an owner, and the business state stays in sync.',
+    tools: ['Read current business state', 'Attach evidence to lineage material', 'Recheck open blockers'], evidence: 'Simulated evidence: the capture pipeline records time, site, device, and operator fields. A human should verify a sample export.', failed: 'The simulation could not continue. Reset and try again.', play: 'Play demo', pause: 'Pause demo', replay: 'Replay from the beginning',
+  },
+} as const;
+const originalText = new Map<Text, string>();
+const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+while (walker.nextNode()) originalText.set(walker.currentNode as Text, walker.currentNode.textContent ?? '');
+let language: Language = new URLSearchParams(location.search).get('lang') === 'en' || (!new URLSearchParams(location.search).has('lang') && localStorage.getItem('citely_case_language') === 'en') ? 'en' : 'zh';
+const strings = () => dynamic[language];
 let store: Store;
 let step = 0;
 let playing = false;
@@ -49,21 +94,38 @@ function pause() {
   playing = false;
   clearTimeout(timer);
   el('play').textContent = '▶';
-  el('play').setAttribute('aria-label', '自动播放演示');
+  el('play').setAttribute('aria-label', strings().play);
+}
+
+function applyLanguage(next: Language, persist = true) {
+  language = next;
+  document.documentElement.lang = language === 'en' ? 'en' : 'zh-CN';
+  document.title = language === 'en' ? 'Bring AI into your business workflow · Citely × WebMCP' : '让 AI 走进业务现场 · Citely × WebMCP';
+  document.querySelector<HTMLMetaElement>('meta[name="description"]')?.setAttribute('content', language === 'en' ? 'Citely WebMCP case study: experience how AI reads a Deal Room, organizes evidence, and leaves confirmation to people.' : 'Citely WebMCP 案例：通过可交互的 Codex 模拟演示，体验 AI 如何读取交易室、整理证据并将确认权交给客户。');
+  for (const [node, original] of originalText) {
+    const value = original.trim();
+    node.textContent = language === 'en' && translations[value] ? original.replace(value, translations[value]!) : original;
+  }
+  root.querySelector('nav')?.setAttribute('aria-label', language === 'en' ? 'Page navigation' : '页面导航');
+  root.querySelector('.lang-toggle')?.setAttribute('aria-label', language === 'en' ? 'Language' : '语言');
+  root.querySelectorAll<HTMLButtonElement>('[data-lang]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.lang === language)));
+  root.querySelectorAll<HTMLAnchorElement>('.wordmark').forEach(link => link.setAttribute('aria-label', language === 'en' ? 'Citely case study home' : 'Citely 案例首页'));
+  el('play').setAttribute('aria-label', strings().play);
+  el('reset').setAttribute('aria-label', strings().replay);
+  document.querySelector('.step-dots')?.setAttribute('aria-label', language === 'en' ? 'Demo steps' : '演示步骤');
+  document.querySelector('.agent-pane')?.setAttribute('aria-label', language === 'en' ? 'Simulated Codex conversation' : '模拟 Codex 对话');
+  document.querySelector('.board-pane')?.setAttribute('aria-label', language === 'en' ? 'Deal Room updating in sync' : '同步更新的交易室');
+  document.querySelector<HTMLFormElement>('.invite-logout')!.action = `/invite/logout?lang=${language}`;
+  if (persist) localStorage.setItem('citely_case_language', language);
 }
 
 function render() {
-  el('step-label').textContent = `${String(step + 1).padStart(2, '0')} / 05　${labels[step]}`;
+  const copy = strings();
+  el('step-label').textContent = `${String(step + 1).padStart(2, '0')} / 05　${copy.labels[step]}`;
   document.querySelectorAll('.step-dots span').forEach((dot, i) => dot.classList.toggle('active', i <= step));
-  el('agent-copy').textContent = [
-    '我会先查看交易室，再整理溯源材料的证据。材料是否已提供，需要由你确认。',
-    '已读取交易室：共 12 项材料、3 道审核关卡。数据溯源记录仍待提供，我会把相关发现附在材料卡片上。',
-    '已将溯源字段及来源附到材料卡片。材料仍然是「待提供」，请核对实际记录和样本导出。',
-    '当前仍有 7 个待解决事项。数据溯源这一项需要你确认材料；安全报告缺失等其他事项还需分别处理。',
-    confirmed ? '你已完成模拟确认。数据溯源阻塞项已解除，其余 6 项仍待处理。' : '请在右侧模拟确认数据溯源材料。确认完成后，工作台会重新计算待解决事项。',
-  ][step]!;
+  el('agent-copy').textContent = step === 4 && confirmed ? copy.confirmed : copy.messages[step]!;
   el('evidence-card').hidden = step < 2;
-  el('lineage-status').textContent = confirmed ? '已提供' : step >= 2 ? '待确认' : '待提供';
+  el('lineage-status').textContent = confirmed ? copy.status[2] : step >= 2 ? copy.status[1] : copy.status[0];
   el('lineage-status').classList.toggle('provided', confirmed);
   el('blocker-count').textContent = String(store.blockers().filter(b => b.open).length).padStart(2, '0');
   el('material-count').innerHTML = `${confirmed ? '01' : '00'}<small>/ 12</small>`;
@@ -72,7 +134,7 @@ function render() {
   el<HTMLButtonElement>('next').disabled = busy || step === 4;
   el<HTMLButtonElement>('play').disabled = step === 4;
   el('agent-result').hidden = !confirmed;
-  el('agent-result').textContent = '✓ 证据有来源，确认有归属，业务状态同步更新。';
+  el('agent-result').textContent = copy.result;
 }
 
 function addTool(name: string, summary: string, response: unknown) {
@@ -107,11 +169,11 @@ async function advance() {
     if (next <= 3) {
       const names = ['dealroom_get_room', 'dealroom_propose_material', 'dealroom_get_blockers'];
       const tool = tools.find(t => t.name === names[next - 1])!;
-      const input = next === 2 ? { material_id: 'm1', state: 'pending', evidence: { summary: '模拟证据：采集流程记录时间、场地、设备与操作员字段；请人工核验样本导出。', source_kind: 'code', location: 'pipeline/lineage.py' } } : {};
+      const input = next === 2 ? { material_id: 'm1', state: 'pending', evidence: { summary: strings().evidence, source_kind: 'code', location: 'pipeline/lineage.py' } } : {};
       const response = await tool.execute(input);
       if (generation !== epoch) return;
       if (!response.ok) throw new Error('工具执行未完成，请重置后再试。');
-      addTool(tool.name, ['读取当前业务状态', '为溯源材料添加证据', '重新检查待解决事项'][next - 1]!, response);
+      addTool(tool.name, strings().tools[next - 1]!, response);
     }
     step = next;
     if (step === 4) pause();
@@ -122,7 +184,7 @@ async function advance() {
     if (generation === epoch) {
       busy = false;
       render();
-      if (failed) el('agent-copy').textContent = '演示暂时未能继续，请点击重置重新开始。';
+      if (failed) el('agent-copy').textContent = strings().failed;
     }
   }
 }
@@ -150,15 +212,23 @@ el('play').addEventListener('click', () => {
   if (playing) { pause(); return; }
   playing = true;
   el('play').textContent = 'Ⅱ';
-  el('play').setAttribute('aria-label', '暂停演示');
+  el('play').setAttribute('aria-label', strings().pause);
   void advance().then(() => { if (playing) schedule(); });
 });
 el('confirm').addEventListener('click', () => {
   if (step !== 4 || confirmed) return;
-  store.update(s => setMaterialState(s, 'm1', 'provided', { confirmation: { by: '案例访客（模拟确认）', at: new Date().toISOString(), basis: '模拟核验溯源记录与样本导出' } }));
+  store.update(s => setMaterialState(s, 'm1', 'provided', { confirmation: { by: language === 'en' ? 'Case visitor (simulated)' : '案例访客（模拟确认）', at: new Date().toISOString(), basis: language === 'en' ? 'Simulated verification of lineage records and sample export' : '模拟核验溯源记录与样本导出' } }));
   confirmed = true;
   render();
   el('reset').focus();
 });
 document.addEventListener('visibilitychange', () => { if (document.hidden) pause(); });
+root.querySelectorAll<HTMLButtonElement>('[data-lang]').forEach(button => button.addEventListener('click', () => {
+  const next = button.dataset.lang as Language;
+  if (next === language) return;
+  pause();
+  applyLanguage(next);
+  reset();
+}));
+applyLanguage(language, false);
 reset();

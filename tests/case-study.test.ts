@@ -5,6 +5,7 @@ describe('case study visitor journey', () => {
     vi.resetModules();
     vi.useFakeTimers();
     document.body.innerHTML = '<div id="case-study"></div>';
+    localStorage.clear();
     await import('../src/case-study');
   });
   afterEach(() => { vi.useRealTimers(); });
@@ -41,5 +42,17 @@ describe('case study visitor journey', () => {
     await vi.advanceTimersByTimeAsync(10000);
     expect(document.querySelectorAll('.tool-call')).toHaveLength(0);
     expect(document.getElementById('step-label')!.textContent).toContain('提出任务');
+  });
+
+  it('switches the complete presentation and workflow copy to English', async () => {
+    (document.querySelector('[data-lang="en"]') as HTMLButtonElement).click();
+    expect(document.documentElement.lang).toBe('en');
+    expect(document.title).toContain('Bring AI into your business workflow');
+    expect(document.body.textContent).toContain('Move work forward as you talk.');
+    expect(document.getElementById('step-label')!.textContent).toContain('Give the task');
+    expect(document.getElementById('lineage-status')!.textContent).toBe('Pending');
+    expect(localStorage.getItem('citely_case_language')).toBe('en');
+    await click('next');
+    expect(document.querySelector('.tool-call')!.textContent).toContain('Read current business state');
   });
 });

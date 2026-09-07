@@ -27,6 +27,14 @@ test('login page contains no secrets or case contents and missing config fails c
   assert.ok(!html.includes(env.INVITE_CODE) && !html.includes(env.INVITE_SESSION_SECRET));
   assert.equal((await handleRequest(request('/'), {}, assets)).status, 503);
 });
+test('English invitation flow stays in English through login and logout', async () => {
+  const page = await handleRequest(request('/invite?lang=en'), env, assets);
+  assert.match(await page.text(), /Welcome to the Citely case room/);
+  const response = await handleRequest(request('/invite?lang=en', { method: 'POST', headers: { Origin: origin, 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ code: env.INVITE_CODE, lang: 'en' }) }), env, assets);
+  assert.equal(response.headers.get('Location'), '/case-study/?lang=en');
+  const logout = await handleRequest(request('/invite/logout?lang=en', { method: 'POST', headers: { Origin: origin } }), env, assets);
+  assert.equal(logout.headers.get('Location'), '/invite?lang=en');
+});
 test('wrong codes, cross-origin forms and oversized submissions are rejected', async () => {
   assert.equal((await handleRequest(post('incorrect'), env, assets)).status, 401);
   assert.equal((await handleRequest(post(env.INVITE_CODE, 'https://attacker.test'), env, assets)).status, 403);

@@ -7,3 +7,4 @@
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
 
 .invite-logout{margin:0}.invite-logout button{background:none;border:0;padding:8px 0;color:var(--muted);font-size:12px;text-decoration:underline;text-underline-offset:4px}
+.lang-toggle{display:flex;align-items:center;gap:5px;color:var(--muted);font-size:12px}.lang-toggle button{border:0;background:none;padding:7px 3px;color:var(--muted);font-size:12px}.lang-toggle button[aria-pressed="true"]{color:var(--ink);font-weight:700}.lang-toggle span{color:var(--line)}
