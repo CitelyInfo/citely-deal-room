@@ -1,7 +1,7 @@
 # Citely Deal Room — WebMCP demo
 
 > **Demo with a synthetic case — not a live service. Do not enter real company data.**
-> Live: **https://citely-deal-room.vercel.app** · Repo: https://github.com/web3yaso/citely-deal-room-demo · License: MIT · Built for the OpenAI WebMCP Challenge (Aug 25 – Sep 3, 2026).
+> Live: **https://citely-webmcp-case-study.maxhuang03.chatgpt.site** (existing Sites access and invitation required) · Repo: https://github.com/CitelyInfo/citely-deal-room · License: MIT · Built for the OpenAI WebMCP Challenge (Aug 25 – Sep 3, 2026).
 
 A Deal Room is a case workbench opened for one business event — here, a teleoperation data vendor (**Northstar Capture Labs**, fictional) trying to pass a frontier lab's vendor review: three doors (security, privacy, legal), one deadline, warranties the founder has to be able to sign.
 
@@ -65,6 +65,12 @@ Without a WebMCP runtime the page works standalone and says so in the banner.
 The Deal Room business logic has no backend or network requests (a test stubs `fetch`/`XMLHttpRequest` to throw and runs every tool), no analytics, no runtime dependencies, CSP `default-src 'self'`. Agent evidence is rendered with `textContent` only and never persisted; `localStorage` holds only enum states, signatures and frozen briefs — **Reset demo** clears it. A production Deal Room needs accounts, roles, an audit log and server-side status judgments signed by a person; none of that belongs in an open demo, so none of it is here.
 
 ## Develop
+
+### Organization development
+
+Continue development in `CitelyInfo/citely-deal-room`. Start feature branches from `main`, open pull requests against `main`, and run the CI checks before merging. The former personal repository is retained as a historical copy.
+
+GitHub is the development repository; Sites remains the existing deployment destination identified by `.openai/hosting.json`. Merging a GitHub pull request does not deploy the site. Preserve the Sites project and its runtime secrets when publishing; no invitation secrets belong in GitHub.
 
 ### Hosted invitation access
 
