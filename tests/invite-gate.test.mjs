@@ -29,7 +29,7 @@ test('login page contains no secrets or case contents and missing config fails c
 });
 test('English invitation flow stays in English through login and logout', async () => {
   const page = await handleRequest(request('/invite?lang=en'), env, assets);
-  assert.match(await page.text(), /Welcome to the Citely case room/);
+  assert.match(await page.text(), /Welcome to the Citely deal room/);
   const response = await handleRequest(request('/invite?lang=en', { method: 'POST', headers: { Origin: origin, 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ code: env.INVITE_CODE, lang: 'en' }) }), env, assets);
   assert.equal(response.headers.get('Location'), '/case-study/?lang=en');
   const logout = await handleRequest(request('/invite/logout?lang=en', { method: 'POST', headers: { Origin: origin } }), env, assets);
