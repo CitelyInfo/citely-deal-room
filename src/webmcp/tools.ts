@@ -97,7 +97,7 @@ export function createTools(store: Store, now: () => string = () => new Date().t
 
   const getBlockers: ToolDef = {
     name: 'dealroom_get_blockers',
-    description: 'Read the blocker list. Each blocker names which door (1 security, 2 privacy, 3 legal) it blocks, whether it is currently open, and a mitigation path. Blockers are anchored to the counterparty\'s questionnaire and warranty clauses, never to statutes. Read-only.',
+    description: 'Read the blocker list. Each blocker names which door (1 security, 2 privacy, 3 legal) it blocks, whether it is currently open, and a mitigation path. Cleared means the individual item\'s recorded prerequisites are met, not approval of an entire review stage or authorization to sign. Material availability does not establish counterparty acceptance. Blockers are anchored to the counterparty\'s questionnaire and warranty clauses, never to statutes. Read-only.',
     inputSchema: { type: 'object', additionalProperties: false, properties: {} },
     execute: safe(async () => okRes({ doors: store.schema.doors, blockers: store.blockers() })),
   };

@@ -14,9 +14,12 @@
     },
     {
       "id": "b2", "door": 1,
-      "title": "Security questionnaire §7 requires SOC 2 Type II or equivalent — neither exists",
-      "mitigation": "Negotiate the questionnaire-alternative path and shrink the pilot data scope; do not start SOC 2 inside this window.",
-      "open_when": { "any_material_not": { "ids": ["m9"], "state": "provided" } }
+      "title": "Security questionnaire §7 — review materials and counterparty acceptance of the pilot review path",
+      "mitigation": "Provide the security review materials (m9) and have the responsible reviewer confirm the counterparty's written acceptance for this pilot scope (f5). A submitted questionnaire or a completed negotiation task alone does not clear this item.",
+      "open_when": { "any_of": [
+        { "any_material_not": { "ids": ["m9"], "state": "provided" } },
+        { "fact_status_in": { "ids": ["f5"], "statuses": ["pending", "unsure"] } }
+      ] }
     },
     {
       "id": "b3", "door": 3,
@@ -32,9 +35,9 @@
     },
     {
       "id": "b5", "door": 3,
-      "title": "License draft §9.4 asks you to warrant IP ownership of operator trajectories — operator agreements (m2) are not provided and the IP-assignment fact (f1) is unconfirmed",
-      "mitigation": "Countersign an IP-assignment addendum with every operator, then confirm f1.",
-      "open_when": { "all_of": [
+      "title": "License draft §9.4 — operator agreement evidence and confirmation of IP assignment",
+      "mitigation": "Provide operator agreements and any signed IP-assignment addenda (m2), then confirm coverage for every operator against the signature log (f1). Both are required to clear this item; document availability alone does not establish IP assignment.",
+      "open_when": { "any_of": [
         { "any_material_not": { "ids": ["m2"], "state": "provided" } },
         { "fact_status_in": { "ids": ["f1"], "statuses": ["pending", "unsure"] } }
       ] }

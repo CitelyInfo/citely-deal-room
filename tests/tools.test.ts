@@ -149,6 +149,22 @@ describe('D4 — static assertion: no network-shaped identifiers in src/', () =>
 });
 
 describe('D6 — human confirmation cannot be overridden', () => {
+  it('agent evidence cannot confirm counterparty acceptance or clear security review', async () => {
+    store.update(s => setMaterialState(s, 'm9', 'provided', { confirmation: sig }));
+    const input = { fact_id: 'f5', evidence: { ...ev, summary: 'Counterparty accepted the pilot review path.', location: 'security-review-acceptance.eml' } };
+    const proposal = await tools.dealroom_propose_fact_evidence!.execute(input);
+    expect(proposal.ok).toBe(true);
+    expect(proposal.blockers_changed).toEqual([]);
+    expect(store.state.facts.find(f => f.id === 'f5')!.status).toBe('pending');
+    const read = await tools.dealroom_get_blockers!.execute({});
+    expect((read.blockers as { id: string; open: boolean }[]).find(b => b.id === 'b2')!.open).toBe(true);
+    const invalid = await tools.dealroom_propose_fact_evidence!.execute({ ...input, status: 'confirmed' });
+    expect(invalid.ok).toBe(false);
+    store.update(s => confirmFact(s, 'f5', sig));
+    expect(store.blockers().find(b => b.id === 'b2')!.open).toBe(false);
+    const overwrite = await tools.dealroom_propose_fact_evidence!.execute(input);
+    expect(overwrite.error).toMatchObject({ code: 'HUMAN_CONFIRMED' });
+  });
   it('material confirmed by human', async () => {
     store.update(s => setMaterialState(s, 'm1', 'provided', { confirmation: sig }));
     const r = await tools.dealroom_propose_material!.execute({ material_id: 'm1', state: 'pending', evidence: ev });

@@ -35,6 +35,16 @@ Every response carries `disclaimer` and `note_to_agent` verbatim. When a human f
 
 The agent sits below all three: it can only gather and propose. Blockers are anchored to the counterparty's questionnaire and warranty clauses, never to statutes.
 
+### Requirement closure for Legal, Legal Ops and Data Partnerships
+
+`provided` records material availability; it does not establish legal sufficiency or counterparty acceptance. Clearing an individual blocker means its recorded prerequisites are met, not that a whole review stage is approved or signing is authorized.
+
+- **IP assignment (b5):** operator agreement materials (m2) must be provided **and** the IP-assignment fact (f1) must be confirmed by a human. Either missing prerequisite keeps the blocker open.
+- **Security review path (b2):** security review materials (m9) must be provided **and** a human must confirm the counterparty security reviewer's written acceptance for the current pilot scope (f5). Record the approval reference, reviewer, date, materials/version, scope and conditions in the confirmation basis. A completed negotiation task or AI evidence alone cannot clear this item. Acceptance of a review path does not certify that all security review requirements are complete.
+- Revoking either prerequisite reopens the corresponding blocker. Older saved rooms retain existing records and initialize f5 as pending; live blockers use the updated rules. Previously frozen Briefs remain historical snapshots.
+
+The data partnerships lead owns the commercial decision, in-house Legal reviews contractual commitments, and Legal Ops coordinates evidence and confirmations. These are workflow responsibilities in the demo, not authenticated access roles.
+
 ## Try it
 
 1. Open the live URL in the **ChatGPT desktop app's in-app browser** (WebMCP on by default) or **Chrome 149+** with `chrome://flags/#enable-webmcp-testing` enabled.

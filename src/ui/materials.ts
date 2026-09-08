@@ -20,7 +20,7 @@ export function renderMaterials(s: RoomState, d: Dispatch): HTMLElement {
   const counts = { provided: 0, pending: 0, nonexistent: 0 };
   for (const m of s.materials) counts[m.state]++;
   return el('div', {},
-    el('p', { class: 'mute small' }, `Three states. "Nonexistent" means it must be created, usually by counsel — count these first. ${counts.provided} provided · ${counts.pending} pending · ${counts.nonexistent} nonexistent. Agents can propose pending/nonexistent; only you can confirm "provided".`),
+    el('p', { class: 'mute small' }, `${counts.provided} provided · ${counts.pending} pending · ${counts.nonexistent} nonexistent. "Provided" records material availability, not legal sufficiency or counterparty acceptance. Agents can propose pending/nonexistent; only a human reviewer can confirm "provided".`),
     el('table', { class: 'grid' }, el('thead', {}, el('tr', {}, el('th', {}, '#'), el('th', {}, 'Material'), el('th', {}, 'State'), el('th', {}, 'Human actions'))),
       el('tbody', {}, ...s.materials.map(m => row(m, d)))));
 }

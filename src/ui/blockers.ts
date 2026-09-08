@@ -3,7 +3,7 @@ import { el } from './dom';
 export function renderBlockers(schema: RoomSchema, blockers: Blocker[], changed: Set<string>): HTMLElement {
   const open = blockers.filter(b => b.open).length;
   const sec = el('section', { class: 'card blockers' }, el('h2', {}, `Blockers · ${open} open`),
-    el('p', { class: 'mute small' }, 'Anchored to the questionnaire and warranty clauses you are asked to sign — never to a statute. Recomputed live from materials and facts.'));
+    el('p', { class: 'mute small' }, 'Tracks requirements in the counterparty questionnaire and contract. Cleared means this item\'s recorded conditions are met; it does not approve an entire review stage or authorize signing.'));
   for (const door of schema.doors) {
     const items = blockers.filter(b => b.door === door.id);
     if (!items.length) continue;

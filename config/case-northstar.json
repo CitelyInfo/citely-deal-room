@@ -8,10 +8,10 @@
     "passConditions": [
       "Security questionnaire accepted at vendor onboarding",
       "DPA signed",
-      "Reps & warranties in the data license are ones the founder can sign"
+      "Data-license reps & warranties are supported by evidence and reviewed by in-house Legal for the authorized business signatory"
     ],
     "backPlannedDeadline": "SOC 2 Type II is absent and takes 3–6 months — longer than this window. The action is therefore 'negotiate a questionnaire alternative and shrink pilot scope', not 'go get SOC 2'.",
-    "decisionMaker": "Founder / CEO (no general counsel at this stage)",
+    "decisionMaker": "Data Partnerships Lead owns the go/no-go decision; in-house Legal reviews contractual commitments; Legal Ops coordinates evidence and confirmations",
     "outOfScope": ["Next-round fundraising diligence", "A second lab", "Overseas capture-site expansion"]
   },
   "materials": [
@@ -23,21 +23,22 @@
     { "id": "m6", "title": "Privacy policy + retention & deletion policy (data-business version)", "state": "pending" },
     { "id": "m7", "title": "Data license term sheet (training rights / sublicensing / exclusivity)", "note": "Usually waits for the lab's template — all negotiating leverage lost", "state": "pending" },
     { "id": "m8", "title": "Disclosure of open-source / scraped data in demo models", "state": "nonexistent" },
-    { "id": "m9", "title": "Security questionnaire draft / SOC 2 report", "note": "Source of the back-planned deadline", "state": "nonexistent" },
+    { "id": "m9", "title": "Security review materials (questionnaire / SOC 2 report / alternative evidence packet)", "note": "Provided records material availability only. Counterparty acceptance of the review path for this pilot is confirmed separately in f5.", "state": "nonexistent" },
     { "id": "m10", "title": "E&O / cyber insurance certificate", "state": "pending" },
     { "id": "m11", "title": "Crowdsourcing / subcontractor platform agreements", "state": "pending" },
     { "id": "m12", "title": "Overseas capture-site compliance files", "note": "Only if any operators are outside the US", "state": "pending" }
   ],
   "facts": [
-    { "id": "f1", "statement": "Every operator agreement contains an IP-assignment clause", "status": "pending", "owner": "Head of Operations", "basis": "Agreement template v2 + signature log" },
+    { "id": "f1", "statement": "Every operator agreement contains an IP-assignment clause", "status": "pending", "owner": "Head of Operations with in-house Legal", "basis": "Executed agreements / IP-assignment addenda + complete operator signature log" },
     { "id": "f2", "statement": "All capture takes place at owned or leased sites", "status": "confirmed", "owner": "Head of Operations", "basis": "Site register", "confirmation": { "by": "Dana Whitfield, Head of Operations", "at": "2026-08-27T16:10:00Z", "basis": "Site register (12 sites)" } },
     { "id": "f3", "statement": "No minors appear in the captured data", "status": "unsure", "owner": "—", "basis": "No age-screening step exists" },
-    { "id": "f4", "statement": "Demo models were trained without external public datasets", "status": "pending", "owner": "Engineering Lead", "basis": "Training logs" }
+    { "id": "f4", "statement": "Demo models were trained without external public datasets", "status": "pending", "owner": "Engineering Lead", "basis": "Training logs" },
+    { "id": "f5", "statement": "The counterparty's security reviewer has accepted the security review path in writing for the current pilot scope, including any agreed conditions", "status": "pending", "owner": "Data Partnerships Lead · Legal Ops records confirmation", "basis": "Counterparty approval email or review record: reviewer, date, accepted materials/version, pilot scope and conditions" }
   ],
   "actions": [
     { "id": "a1", "task": "Countersign IP-assignment addendum with all operators", "owner": "Client · Operations", "due": "D+10", "status": "open", "evidenceOfCompletion": "Complete signature log" },
     { "id": "a2", "task": "Assemble consent-drafting packet and refer to US counsel", "owner": "Citely", "due": "D+5", "status": "open", "evidenceOfCompletion": "Packet sent + counsel acknowledges receipt" },
-    { "id": "a3", "task": "Propose questionnaire-alternative path to the lab", "owner": "Client · CEO", "due": "D+7", "status": "open", "evidenceOfCompletion": "Written reply from the lab" },
+    { "id": "a3", "task": "Obtain a written response on the pilot's alternative security review path", "owner": "Data Partnerships Lead · Legal Ops", "due": "D+7", "status": "open", "evidenceOfCompletion": "Counterparty response identifying reviewer, pilot scope and conditions; record acceptance separately in f5" },
     { "id": "a4", "task": "Stand up age-screening process", "owner": "Client · Operations", "due": "D+14", "status": "open", "evidenceOfCompletion": "Process doc + first sampled batch" }
   ],
   "escalations": [

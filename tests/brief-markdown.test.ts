@@ -33,7 +33,7 @@ describe('briefToMarkdown', () => {
   it('lists open blockers by door and marks cleared ones', () => {
     expect(md).toMatch(/## Blockers/);
     expect(md).toContain('Door 1');
-    expect(md).toMatch(/OPEN.*SOC 2 Type II/);
+    expect(md).toMatch(/OPEN.*Security questionnaire §7.*counterparty acceptance/);
     expect(md).toMatch(/cleared.*per-record provenance/);
   });
   it('lists materials with state and signature, facts with signature', () => {
