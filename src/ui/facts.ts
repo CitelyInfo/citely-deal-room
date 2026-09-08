@@ -2,12 +2,14 @@ import type { Fact, RoomState } from '../engine/types';
 import type { Dispatch } from './app';
 import { MAX_SUMMARY } from '../engine/constants';
 import { btnEl, clip, el, fmtTime } from './dom';
+import { inlineEvidence, relationLinks, type ItemContext } from './relations';
 
-function row(f: Fact, d: Dispatch): HTMLElement {
-  return el('tr', { class: `status-${f.status}` },
+function row(f: Fact, d: Dispatch, ctx?: ItemContext): HTMLElement {
+  return el('tr', { class: `status-${f.status} ${ctx?.selectedItem === f.id ? 'selected-row' : ''}`, id: `item-${f.id}`, tabindex: '-1' },
     el('td', { class: 'mono mute' }, f.id),
     el('td', {}, el('div', {}, f.statement), el('div', { class: 'mute small' }, `Owner: ${f.owner ?? '—'} · Basis: ${f.basis ?? '—'}`),
-      f.agentEvidence ? el('div', { class: 'small evid' }, el('span', { class: 'tag tag-agent' }, 'agent evidence'), ' ', clip(f.agentEvidence.summary, MAX_SUMMARY)) : null),
+      f.agentEvidence ? el('div', { class: 'small evid' }, el('span', { class: 'tag tag-agent' }, 'agent evidence'), ' ', clip(f.agentEvidence.summary, MAX_SUMMARY)) : null,
+      inlineEvidence(f.agentEvidence, f.id), relationLinks(ctx, 'facts', f.id)),
     el('td', {}, el('span', { class: `chip chip-${f.status}` }, f.status)),
     el('td', { class: 'sig' }, f.confirmation ? el('div', { class: 'small' }, el('strong', {}, f.confirmation.by), el('div', { class: 'mono mute' }, fmtTime(f.confirmation.at)), el('div', { class: 'mute' }, f.confirmation.basis)) : el('span', { class: 'mute' }, f.status === 'unsure' ? 'nobody can sign this — that is the finding' : '—')),
     el('td', { class: 'acts' },
@@ -16,9 +18,10 @@ function row(f: Fact, d: Dispatch): HTMLElement {
       f.status !== 'unsure' ? btnEl('Unsure', '', () => d.setFact(f.id, 'unsure')) : null));
 }
 
-export function renderFacts(s: RoomState, d: Dispatch): HTMLElement {
+export function renderFacts(s: RoomState, d: Dispatch, ctx?: ItemContext): HTMLElement {
   return el('div', {},
     el('p', { class: 'mute small' }, 'Facts are confirmed by the client only. A confirmation is a signature: who, when, on what basis. Agents can attach evidence but never change status.'),
     el('table', { class: 'grid' }, el('thead', {}, el('tr', {}, el('th', {}, '#'), el('th', {}, 'Fact'), el('th', {}, 'Status'), el('th', {}, 'Signature'), el('th', {}, 'Human actions'))),
-      el('tbody', {}, ...s.facts.map(f => row(f, d)))));
+      el('tbody', {}, ...s.facts.map(f => row(f, d, ctx)))),
+    s.facts.length ? null : el('p', { class: 'empty-state' }, 'No facts match this view. Clear filters to see all facts.'));
 }

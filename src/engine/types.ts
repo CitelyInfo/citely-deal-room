@@ -23,6 +23,7 @@ export interface Escalation {
   id: string; kind: 'referral' | 'hard_stop'; trigger: string; packet: string[]; handoff: string;
 }
 export interface EventCard {
+  milestones?: { label: string; date: string }[];
   title: string; counterparty: string; deadline: string; passConditions: string[];
   backPlannedDeadline: string; decisionMaker: string; outOfScope: string[];
 }
@@ -33,7 +34,7 @@ export type Condition =
   | { any_of: Condition[] }
   | { all_of: Condition[] };
 
-export interface BlockerRule { id: string; door: Door; title: string; mitigation?: string; open_when: Condition }
+export interface BlockerRule { id: string; door: Door; title: string; label?: string; owner?: string; priority?: number; action_ids?: string[]; mitigation?: string; open_when: Condition }
 export interface RoomSchema { event_type: string; doors: { id: Door; name: string }[]; blockers: BlockerRule[] }
 export interface Blocker { id: string; door: Door; title: string; mitigation?: string; open: boolean }
 

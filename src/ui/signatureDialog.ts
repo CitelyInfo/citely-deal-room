@@ -2,6 +2,7 @@ import { el } from './dom';
 import type { Confirmation } from '../engine/types';
 
 export function askSignature(title: string, defaultBasis: string): Promise<Confirmation | null> {
+  const previousFocus = document.activeElement as HTMLElement | null;
   return new Promise(resolve => {
     const name = el('input', { type: 'text', name: 'by', required: 'true', placeholder: 'Your name and role', autocomplete: 'off' }) as HTMLInputElement;
     const basis = el('input', { type: 'text', name: 'basis', required: 'true', placeholder: 'Basis (which material / record)', value: defaultBasis, autocomplete: 'off' }) as HTMLInputElement;
@@ -27,6 +28,7 @@ export function askSignature(title: string, defaultBasis: string): Promise<Confi
       document.removeEventListener('keydown', onKeydown);
       scrim.remove();
       app?.removeAttribute('inert');
+      previousFocus?.focus({ preventScroll: true });
       resolve(c);
     };
 
