@@ -1,11 +1,20 @@
-# Citely Deal Room — WebMCP demo
+# Citely Deal Room
 
 > **Demo with a synthetic case — not a live service. Do not enter real company data.**
-> Live: **https://citely-webmcp-case-study.maxhuang03.chatgpt.site** (existing Sites access and invitation required) · Repo: https://github.com/CitelyInfo/citely-deal-room · License: MIT · Built for the OpenAI WebMCP Challenge (Aug 25 – Sep 3, 2026).
 
-A Deal Room is a case workbench opened for one business event — here, a teleoperation data vendor (**Northstar Capture Labs**, fictional) trying to pass a frontier lab's vendor review: three doors (security, privacy, legal), one deadline, warranties the founder has to be able to sign.
+**[Official repository · CitelyInfo/citely-deal-room](https://github.com/CitelyInfo/citely-deal-room)** · [Deal Room](https://citely-webmcp-case-study.maxhuang03.chatgpt.site/) · [Interactive case study (EN)](https://citely-webmcp-case-study.maxhuang03.chatgpt.site/case-study/?lang=en) · [交互案例（中文）](https://citely-webmcp-case-study.maxhuang03.chatgpt.site/case-study/?lang=zh) · [MIT license](LICENSE)
 
-**The agent gathers evidence. The client confirms facts. Judgment stays human.**
+Online access requires the existing Sites permission and an invitation code. Development continues in the Citely organization repository linked above.
+
+Citely Deal Room is a shared workbench for **in-house Legal, Legal Ops, and data partnership leads** to coordinate a data deal's evidence, confirmations, and unresolved requirements. The synthetic case follows **Northstar Capture Labs**, a teleoperation data vendor, through a frontier lab's security, privacy, and legal review.
+
+**The agent gathers evidence. Responsible reviewers confirm facts. Business and legal decisions stay with people.**
+
+![Citely Deal Room English case study showing a simulated Codex conversation beside the Northstar vendor-review workbench](docs/images/citely-deal-room-case-study.png)
+
+*The bilingual case study pairs a scripted Codex conversation with an interactive Deal Room. The screenshot shows synthetic data; the presentation does not connect to a live Codex session.*
+
+Originally built for the OpenAI WebMCP Challenge (Aug 25 – Sep 3, 2026).
 
 ## What people and agents do together
 
@@ -47,7 +56,11 @@ The data partnerships lead owns the commercial decision, in-house Legal reviews 
 
 ## Try it
 
-1. Open the live URL in the **ChatGPT desktop app's in-app browser** (WebMCP on by default) or **Chrome 149+** with `chrome://flags/#enable-webmcp-testing` enabled.
+For a guided introduction, open the [English case study](https://citely-webmcp-case-study.maxhuang03.chatgpt.site/case-study/?lang=en) or [中文案例](https://citely-webmcp-case-study.maxhuang03.chatgpt.site/case-study/?lang=zh), then advance the simulation and try the final human confirmation. This presentation is separate from the actual WebMCP-enabled workbench.
+
+To use the workbench with an agent:
+
+1. Open the [Deal Room](https://citely-webmcp-case-study.maxhuang03.chatgpt.site/) in a WebMCP-enabled browser. Complete Sites sign-in and invitation verification as required, then use **Open Deal Room** on the case-study page to enter the workbench. The banner reports whether tools are available.
 2. Copy `demo-materials/operator-agreement-v2.pdf` to your desktop.
 3. Attach `operator-agreement-v2.pdf` to the chat (most agent runtimes cannot read your desktop on their own) and tell the agent: **"Read the attached operator agreement and the pipeline/ directory of this repo on GitHub, then update the deal room."** If the agent cannot browse GitHub, attach `pipeline/lineage.py` too.
 4. Watch the blockers; then confirm m1 as provided yourself (signature dialog) and watch the Door 1 lineage blocker clear.
@@ -68,7 +81,7 @@ The Deal Room business logic has no backend or network requests (a test stubs `f
 
 ### Organization development
 
-Continue development in `CitelyInfo/citely-deal-room`. Start feature branches from `main`, open pull requests against `main`, and run the CI checks before merging. The former personal repository is retained as a historical copy.
+Continue development in [CitelyInfo/citely-deal-room](https://github.com/CitelyInfo/citely-deal-room). Start feature branches from `main`, open pull requests against `main`, and run the CI checks before merging. The former personal repository is retained as a historical copy.
 
 GitHub is the development repository; Sites remains the existing deployment destination identified by `.openai/hosting.json`. Merging a GitHub pull request does not deploy the site. Preserve the Sites project and its runtime secrets when publishing; no invitation secrets belong in GitHub.
 
@@ -82,13 +95,16 @@ Visitors enter the code at `/invite`; a signed Secure/HttpOnly cookie grants acc
 
 ### Website case study
 
-Open `/case-study/` for the standalone Chinese client-facing case study. It pairs a simulated Codex conversation with a live, isolated copy of the Deal Room state. Visitors can advance manually, play/pause, reset, and simulate the final human confirmation. The scripted calls reuse the existing tool implementations; this presentation does not connect to Codex, register tools, read files, or persist demo state. The original interactive Deal Room remains at `/`.
+Open `/case-study/` for the standalone bilingual case study; use the language toggle or `?lang=en` / `?lang=zh`. It pairs a simulated Codex conversation with a live, isolated copy of the Deal Room state. Visitors can advance manually, play/pause, reset, and simulate the final human confirmation. The scripted calls reuse the existing tool implementations; this presentation does not connect to Codex, register tools, read files, or persist demo state. The interactive Deal Room remains at `/`.
 
 ```
-npm install
+git clone https://github.com/CitelyInfo/citely-deal-room.git
+cd citely-deal-room
+npm ci
 npm run dev        # http://localhost:5173
 npm test           # engine + D1–D6 acceptance tests
 npm run build      # invitation-protected Sites Worker in dist/server/index.js
+node scripts/check-build.mjs # verify embedded pages/assets, invitation gate and CSP
 npm run build:static # ungated offline/static export; not the protected Sites deployment
 python3 demo-materials/build-pdfs.py   # rebuild PDF props
 ```
@@ -97,6 +113,8 @@ Acceptance tests: **D1** `provided` refused · **D2** hard stop refuses proposes
 
 ## 中文摘要
 
-面向创业者的"交易室"演示：一个商业事件、三道门、材料三态（已有/待提供/不存在）、事实署名确认、锚定对手方清单的阻塞项、行动看板与冻结快照。通过 WebMCP 暴露 5 个受限工具——agent 只能取证与提议，`provided` 与事实确认权归客户，硬停下自动化全部拒绝。业务逻辑在浏览器本地运行；Sites 部署另加服务器端邀请码验证。案例为合成数据。
+面向**企业法务、Legal Ops 和数据合作负责人**的交易协作工作台：围绕一笔数据合作，集中管理材料、事实署名确认、对手方审核要求、阻塞项、行动与冻结简报。AI 通过 WebMCP 的 5 个受限工具取证和提议，人工负责材料与事实确认；单项阻塞解除不等于整道审核通过或批准签约。
+
+项目在 [CitelyInfo/citely-deal-room](https://github.com/CitelyInfo/citely-deal-room) 持续开发。中英文交互案例展示模拟 Codex 对话与工作台联动；实际工作台可独立使用或接入 WebMCP。线上访问保留 Sites 权限和邀请码验证，案例均为合成数据。
 
 All names and documents are synthetic. Not legal advice.
