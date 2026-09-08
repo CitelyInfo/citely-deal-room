@@ -30,6 +30,7 @@ export interface EventCard {
 export type Condition =
   | { any_material_not: { ids: string[]; state: MaterialState } }
   | { fact_status_in: { ids: string[]; statuses: FactStatus[] } }
+  | { any_of: Condition[] }
   | { all_of: Condition[] };
 
 export interface BlockerRule { id: string; door: Door; title: string; mitigation?: string; open_when: Condition }

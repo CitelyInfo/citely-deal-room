@@ -9,9 +9,11 @@ export function evalCondition(cond: Condition, state: RoomState): boolean {
     const { ids, statuses } = cond.fact_status_in;
     return ids.some(id => {
       const f = state.facts.find(x => x.id === id);
-      return f !== undefined && statuses.includes(f.status);
+      // Missing facts must not silently clear a requirement (e.g. older room data).
+      return f === undefined || statuses.includes(f.status);
     });
   }
+  if ('any_of' in cond) return cond.any_of.some(c => evalCondition(c, state));
   return cond.all_of.every(c => evalCondition(c, state));
 }
 

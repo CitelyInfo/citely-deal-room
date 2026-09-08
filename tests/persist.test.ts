@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { loadCase, toPersisted, fromPersisted, saveToStorage, loadFromStorage, clearStorage } from '../src/engine/persist';
 import { Store } from '../src/engine/store';
+import { computeBlockers } from '../src/engine/rules';
 import { setMaterialState, confirmFact, setFactStatus, setHardStop } from '../src/engine/actions';
 import { STORAGE_KEY } from '../src/engine/constants';
 import schema from '../config/room-schema.json';
@@ -46,6 +47,26 @@ describe('persistence', () => {
   it('ignores corrupt storage', () => {
     localStorage.setItem(STORAGE_KEY, '{not json');
     expect(loadFromStorage(fresh()).hardStop).toBe(false);
+  });
+  it('older saved rooms keep their records but require the new acceptance fact', () => {
+    let s = setMaterialState(fresh(), 'm9', 'provided', { confirmation: sig });
+    s = setMaterialState(s, 'm2', 'provided', { confirmation: sig });
+    const p = toPersisted(s);
+    delete p.facts.f5; // Storage written before counterparty acceptance was introduced.
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(p));
+    const restored = loadFromStorage(fresh());
+    expect(restored.materials.find(m => m.id === 'm9')!.confirmation).toEqual(sig);
+    expect(restored.facts.find(f => f.id === 'f5')!.status).toBe('pending');
+    expect(computeBlockers(S, restored).filter(b => ['b2', 'b5'].includes(b.id)).every(b => b.open)).toBe(true);
+  });
+  it('retains human acceptance and reopens security review after its revocation across reloads', () => {
+    const s = confirmFact(setMaterialState(fresh(), 'm9', 'provided', { confirmation: sig }), 'f5', sig);
+    saveToStorage(s);
+    const restored = loadFromStorage(fresh());
+    expect(restored.facts.find(f => f.id === 'f5')!.confirmation).toEqual(sig);
+    expect(computeBlockers(S, restored).find(b => b.id === 'b2')!.open).toBe(false);
+    saveToStorage(setFactStatus(restored, 'f5', 'pending'));
+    expect(computeBlockers(S, loadFromStorage(fresh())).find(b => b.id === 'b2')!.open).toBe(true);
   });
 });
 

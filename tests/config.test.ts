@@ -9,7 +9,8 @@ const c = caseFile as CaseFile;
 function idsIn(cond: Condition): { materials: string[]; facts: string[] } {
   if ('any_material_not' in cond) return { materials: cond.any_material_not.ids, facts: [] };
   if ('fact_status_in' in cond) return { materials: [], facts: cond.fact_status_in.ids };
-  return cond.all_of.map(idsIn).reduce((a, b) => ({ materials: [...a.materials, ...b.materials], facts: [...a.facts, ...b.facts] }), { materials: [], facts: [] });
+  const children = 'any_of' in cond ? cond.any_of : cond.all_of;
+  return children.map(idsIn).reduce((a, b) => ({ materials: [...a.materials, ...b.materials], facts: [...a.facts, ...b.facts] }), { materials: [], facts: [] });
 }
 
 describe('config integrity', () => {
