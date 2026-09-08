@@ -5,6 +5,7 @@
     "title": "Northstar Capture Labs × frontier-lab data supply pilot",
     "counterparty": "A frontier lab's procurement, security review, and legal — three doors, in that order",
     "deadline": "2026-10-15 target MSA signature · pilot start 2026-09-30",
+    "milestones": [{"label": "Pilot start", "date": "2026-09-30"}, {"label": "Target MSA signature", "date": "2026-10-15"}],
     "passConditions": [
       "Security questionnaire accepted at vendor onboarding",
       "DPA signed",

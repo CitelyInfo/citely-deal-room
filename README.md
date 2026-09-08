@@ -22,6 +22,13 @@ Originally built for the OpenAI WebMCP Challenge (Aug 25 – Sep 3, 2026).
 - The board is the only place it writes — through **five constrained verbs** exposed with WebMCP.
 - Blockers open and close live as material and fact states change; the human signs confirmations, flags hard stops, and freezes the Brief.
 
+## Review workspace
+
+- The overview shows open requirements across the three review stages, the next recorded milestone, and the top three items to resolve. Requirements with new agent evidence appear first, followed by configured deal priority.
+- Select a priority item or blocker to see its responsible team, closure conditions, linked materials, facts, and actions. Follow an item link to its row and review evidence alongside the human confirmation controls.
+- Filter by review stage or **Needs confirmation**, or clear filters to return to the full board. Progress and priorities update when confirmations change; completing an action does not establish counterparty acceptance.
+- Deal background is collapsed initially. Milestone dates come from the case record; relative action deadlines remain as recorded. The board includes all reviewers and does not imply authenticated personal assignments.
+
 ## The five tools
 
 | Tool | Writes? | Constraint |
